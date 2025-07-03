@@ -1,0 +1,27 @@
+/* static/style.css */
+body {
+  font-family: sans-serif;
+  background: #f2f2f2;
+  padding: 20px;
+}
+
+#chat-box {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 10px;
+  height: 400px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+.user-msg {
+  text-align: right;
+  margin: 5px;
+  color: blue;
+}
+
+.bot-msg {
+  text-align: left;
+  margin: 5px;
+  color: green;
+}
