@@ -65,7 +65,10 @@ def gerar_questoes_gemini(tema, videos, api_key, num_questoes=10):
     )
 
     prompt = f"""
-Você é um assistente educacional. Com base nos seguintes vídeos e suas descrições sobre o tema \"{tema}\", gere {num_questoes} questões objetivas, curtas e de nível escolar (ensino médio). As perguntas devem estar diretamente relacionadas ao conteúdo sugerido pelos vídeos.
+Você é um assistente educacional. 
+Com base nos seguintes vídeos e suas descrições sobre o tema \"{tema}\", 
+gere {num_questoes} questões objetivas, curtas e de nível escolar (ensino médio).
+ As perguntas devem estar diretamente relacionadas ao conteúdo sugerido pelos vídeos e sem dar o gabarito.
 
 Vídeos:
 {detalhes_videos}
