@@ -1,8 +1,8 @@
 async function mostrarRespostaComDigitacao(container, textoCompleto) {
   return new Promise((resolve) => {
     let i = 0;
-    const velocidade = 10; // ms por caractere
-    container.innerHTML = ""; // limpa
+    const velocidade = 10;
+    container.innerHTML = "";
 
     function digitar() {
       if (i < textoCompleto.length) {
@@ -20,12 +20,12 @@ async function mostrarRespostaComDigitacao(container, textoCompleto) {
 
 async function enviar() {
   const input = document.getElementById("entrada");
-  const chatBox = document.getElementById("chat-box");
+  const mensagens = document.getElementById("chat-mensagens");
   const texto = input.value.trim();
 
   if (!texto) return;
 
-  chatBox.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
+  mensagens.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
   input.value = "";
 
   try {
@@ -37,16 +37,13 @@ async function enviar() {
 
     const data = await resposta.json();
 
-    // Cria a bolha do bot com <p> vazio para digitação
-    chatBox.innerHTML += `<div class="bot-msg bolha"><p class="typing"></p></div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
+    mensagens.innerHTML += `<div class="bot-msg bolha"><p class="typing"></p></div>`;
+    mensagens.scrollTop = mensagens.scrollHeight;
 
-    const p = chatBox.querySelector("div.bot-msg.bolha:last-child p.typing");
+    const p = mensagens.querySelector("div.bot-msg.bolha:last-child p.typing");
 
-    // Mostra a resposta letra a letra
     await mostrarRespostaComDigitacao(p, data.resposta);
 
-    // Depois adiciona vídeos, se houver
     if (data.videos && data.videos.length > 0) {
       let ul = document.createElement("ul");
       data.videos.forEach((v) => {
@@ -54,28 +51,59 @@ async function enviar() {
         li.innerHTML = `<a href="${v.link}" target="_blank">${v.titulo}</a> - ${v.canal}`;
         ul.appendChild(li);
       });
-      chatBox.querySelector("div.bot-msg.bolha:last-child").appendChild(ul);
+      mensagens.querySelector("div.bot-msg.bolha:last-child").appendChild(ul);
     }
 
-    // Depois adiciona questões, se houver
     if (data.questoes) {
       let pQuest = document.createElement("p");
       pQuest.innerHTML = data.questoes.replace(/\n/g, "<br>");
-      chatBox.querySelector("div.bot-msg.bolha:last-child").appendChild(pQuest);
+      mensagens.querySelector("div.bot-msg.bolha:last-child").appendChild(pQuest);
     }
 
-    chatBox.scrollTop = chatBox.scrollHeight;
+    mensagens.scrollTop = mensagens.scrollHeight;
   } catch (erro) {
     console.error("Erro ao enviar pergunta:", erro);
-    chatBox.innerHTML += `<div class="bot-msg bolha">❌ Erro ao se comunicar com o servidor.</div>`;
+    mensagens.innerHTML += `<div class="bot-msg bolha">❌ Erro ao se comunicar com o servidor.</div>`;
   }
 }
 
-// Envia ao apertar Enter
+const inputInicial = document.getElementById("entrada-inicial");
+if (inputInicial) {
+  inputInicial.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      enviainicia();
+    }
+  });
+}
+
 const input = document.getElementById("entrada");
-input.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    enviar();
+if (input) {
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      enviar();
+    }
+  });
+}
+
+function iniciarChat() {
+  document.querySelector(".intro").style.display = "none";
+  document.getElementById("chat-box").style.display = "flex";
+  document.getElementById("newChatBtn").style.display = "block";
+}
+
+function openUserPage() {
+  alert("Abrir página de conta do usuário");
+}
+
+function enviainicia() {
+  iniciarChat();
+  const entradaInicial = document.getElementById("entrada-inicial");
+  const entradaChat = document.getElementById("entrada");
+  if (entradaInicial && entradaChat) {
+    entradaChat.value = entradaInicial.value;
+    entradaInicial.value = "";
   }
-});
+  enviar();
+}
