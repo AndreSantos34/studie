@@ -1,7 +1,7 @@
 async function mostrarRespostaComDigitacao(container, textoCompleto) {
   return new Promise((resolve) => {
     let i = 0;
-    const velocidade = 3; // ms por caractere
+    const velocidade = 10; // ms por caractere
     container.innerHTML = ""; // limpa
 
     function digitar() {
