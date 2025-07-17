@@ -30,7 +30,7 @@ TEMAS_POR_MATERIA = {
         "vietnam", "guerra do vietnã", "coreia", "guerra da coreia",
         "revolucao russa", "revolução russa", "crise de 29",
         "queda muro de berlim", "muro de berlim", "berlim",
-        "neoliberalismo", "globalizacao", "globalização"
+        "neoliberalismo", "globalizacao", "globalização", "quilombolas"
     ],
     "geografia": [
         "cartografia", "coordenadas geograficas", "coordenadas geográficas",

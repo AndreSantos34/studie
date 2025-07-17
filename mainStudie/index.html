@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>studie</title>
-    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="static/style.css" />
   </head>
   <body>
     <div class="container">
@@ -23,32 +23,33 @@
       <!-- Main Content -->
       <div class="main">
         <header class="topbar">
-          <button class="user-btn" onclick="openUserPage()">👤 usuário</button>
+          <button class="user-btn" onclick="openUserPage()"> usuário</button>
         </header>
 
         <!-- Intro Section -->
         <div class="intro" style="position: relative; flex-direction: column; gap: 20px; padding-right: 80px;">
           <div class="title">como o <span>Studie</span> funciona:</div>
 
-          <div class="text" style="text-align: justify; max-width: 600px; font-size: 16px; line-height: 1.6;">
+          <div class="text" style=" margin-bottom: 10px;">
             <p>
               Diga ao studie qual o tema da matéria que está com dificuldades e o veja preparar um material perfeito para seus estudos, com vídeo aulas sobre o tema e perguntas para a prática.<br />
               O studie é um chat com inteligência artificial que te ajuda nos avanços com os estudos, nunca mais tenha dificuldade em encontrar conteúdos relevantes e atividades sobre o tema para estudar.
             </p>
           </div>
 
-          <div class="input-bar">
+          <div class="input-bar1">
             <input type="text" id="entrada-inicial" placeholder="    O que deseja estudar?" />
             <button onclick="enviainicia()">enviar</button>
           </div>
+
         </div>
 
         <!-- Chat Section -->
-        <div class="chat-section" id="chat-box">
+        <div class="chat-section" id="chat-box" style="display:none">
           <div class="chat-mensagens" id="chat-mensagens">
             <!-- Mensagens aparecem aqui -->
           </div>
-          <div class="input-bar">
+          <div class="input-bar2">
             <input type="text" id="entrada" placeholder="O que deseja estudar?" />
             <button onclick="enviar()">enviar</button>
           </div>
@@ -56,6 +57,6 @@
       </div>
     </div>
 
-    <script src="/static/script.js"></script>
+    <script src="static/script.js"></script>
   </body>
 </html>

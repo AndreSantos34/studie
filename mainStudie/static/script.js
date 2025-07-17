@@ -99,6 +99,9 @@ function openUserPage() {
 
 function enviainicia() {
   iniciarChat();
+  const intro = document.querySelector(".intro");
+  if(intro)intro.style.display = "none";
+
   const entradaInicial = document.getElementById("entrada-inicial");
   const entradaChat = document.getElementById("entrada");
   if (entradaInicial && entradaChat) {
