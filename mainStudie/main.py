@@ -27,7 +27,7 @@ def identificar_materia(tema):
             if t in tema:
                 return materia
     return None
-
+    
 # === Buscar vídeos escolares ===
 def buscar_videos_escolares(tema, materia, api_key, max_results=5):
     youtube = build('youtube', 'v3', developerKey=api_key)

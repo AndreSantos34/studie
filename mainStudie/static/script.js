@@ -29,7 +29,19 @@ async function enviar() {
   chatBox.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
   input.value = "";
 
+  // Cria bolha com indicador "digitando..."
+  let botBolha = document.createElement("div");
+  botBolha.classList.add("bot-msg", "bolha");
+  botBolha.innerHTML = `
+    <div class="typing-indicator">
+      <span></span><span></span><span></span>
+    </div>
+  `;
+  chatBox.appendChild(botBolha);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
   try {
+    // Faz a requisição
     const resposta = await fetch("http://localhost:8000/perguntar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,13 +50,9 @@ async function enviar() {
 
     const data = await resposta.json();
 
-    // Cria a bolha do bot com <p> vazio para digitação
-    chatBox.innerHTML += `<div class="bot-msg bolha"><p class="typing"></p></div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    const p = chatBox.querySelector("div.bot-msg.bolha:last-child p.typing");
-
-    // Mostra a resposta letra a letra
+    // Substitui o indicador pelo texto da resposta
+    botBolha.innerHTML = `<p class="typing"></p>`;
+    const p = botBolha.querySelector("p.typing");
     await mostrarRespostaComDigitacao(p, data.resposta);
 
     // Depois adiciona vídeos, se houver
@@ -72,9 +80,22 @@ async function enviar() {
 
     // Depois adiciona questões, se houver
     if (data.questoes) {
-      let pQuest = document.createElement("p");
-      pQuest.innerHTML = data.questoes.replace(/\n/g, "<br>");
-      chatBox.querySelector("div.bot-msg.bolha:last-child").appendChild(pQuest);
+      let questoesBolha = document.createElement("div");
+      questoesBolha.classList.add("bot-msg", "bolha");
+      questoesBolha.innerHTML = `
+        <div class="typing-indicator">
+          <span></span><span></span><span></span>
+        </div>
+      `;
+      chatBox.appendChild(questoesBolha);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Troca indicador pelas questões reais
+      questoesBolha.innerHTML = `<p>${data.questoes.replace(
+        /\n/g,
+        "<br>"
+      )}</p>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;

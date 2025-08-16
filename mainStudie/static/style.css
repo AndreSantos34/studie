@@ -48,3 +48,43 @@ input[type="number"] {
   width: 60px;
   margin: 5px;
 }
+
+.typing-indicator {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 20px;
+}
+
+.typing-indicator span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 2px;
+  background: #155724; /* mesma cor do texto do bot */
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+  40% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+}
