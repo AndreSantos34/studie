@@ -25,6 +25,7 @@ async function enviar() {
 
   if (!texto) return;
 
+  // Exibe mensagem do usuário
   mensagens.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
   input.value = "";
 
@@ -37,13 +38,21 @@ async function enviar() {
 
     const data = await resposta.json();
 
-    mensagens.innerHTML += `<div class="bot-msg bolha"><p class="typing"></p></div>`;
+    // Cria bolha do bot para resposta principal
+    const botDiv = document.createElement("div");
+    botDiv.classList.add("bot-msg", "bolha");
+
+    const p = document.createElement("p");
+    p.classList.add("typing");
+    botDiv.appendChild(p);
+
+    mensagens.appendChild(botDiv);
     mensagens.scrollTop = mensagens.scrollHeight;
 
-    const p = mensagens.querySelector("div.bot-msg.bolha:last-child p.typing");
-
+    // Escreve resposta principal
     await mostrarRespostaComDigitacao(p, data.resposta);
 
+    // Se vieram vídeos
     if (data.videos && data.videos.length > 0) {
       let ul = document.createElement("ul");
       data.videos.forEach((v) => {
@@ -51,13 +60,19 @@ async function enviar() {
         li.innerHTML = `<a href="${v.link}" target="_blank">${v.titulo}</a> - ${v.canal}`;
         ul.appendChild(li);
       });
-      mensagens.querySelector("div.bot-msg.bolha:last-child").appendChild(ul);
+      botDiv.appendChild(ul);
     }
 
+    // Se vier pergunta OU lista de questões -> sempre em bolha separada
     if (data.questoes) {
+      const botQuestDiv = document.createElement("div");
+      botQuestDiv.classList.add("bot-msg", "bolha");
+
       let pQuest = document.createElement("p");
       pQuest.innerHTML = data.questoes.replace(/\n/g, "<br>");
-      mensagens.querySelector("div.bot-msg.bolha:last-child").appendChild(pQuest);
+
+      botQuestDiv.appendChild(pQuest);
+      mensagens.appendChild(botQuestDiv);
     }
 
     mensagens.scrollTop = mensagens.scrollHeight;
@@ -100,7 +115,7 @@ function openUserPage() {
 function enviainicia() {
   iniciarChat();
   const intro = document.querySelector(".intro");
-  if(intro)intro.style.display = "none";
+  if (intro) intro.style.display = "none";
 
   const entradaInicial = document.getElementById("entrada-inicial");
   const entradaChat = document.getElementById("entrada");
