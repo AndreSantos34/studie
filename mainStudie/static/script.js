@@ -25,6 +25,7 @@ async function enviar() {
 
   if (!texto) return;
 
+  // Exibe a mensagem do usuário
   chatBox.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
   input.value = "";
 
@@ -55,6 +56,18 @@ async function enviar() {
         ul.appendChild(li);
       });
       chatBox.querySelector("div.bot-msg.bolha:last-child").appendChild(ul);
+
+      // Após os vídeos, nova bolha com a pergunta sobre questões
+      chatBox.innerHTML += `<div class="bot-msg bolha"><p class="typing"></p></div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const novaPergunta = chatBox.querySelector(
+        "div.bot-msg.bolha:last-child p.typing"
+      );
+      await mostrarRespostaComDigitacao(
+        novaPergunta,
+        "Quantas questões você deseja gerar?"
+      );
     }
 
     // Depois adiciona questões, se houver
