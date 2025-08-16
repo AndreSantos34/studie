@@ -3,5 +3,8 @@ uvicorn
 google-api-python-client
 google-generativeai
 pydantic
+yt-dlp 
+google-cloud-videointelligence 
+openai
 
 # pip install -r requirements.txt
