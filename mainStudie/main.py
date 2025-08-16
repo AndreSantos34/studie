@@ -13,6 +13,9 @@ from temas import TEMAS_POR_MATERIA
 YOUTUBE_API_KEY = 'AIzaSyClB66YUAolBTKU7mN3Wucs2vgixHZvsjE'
 GEMINI_API_KEY = 'AIzaSyBQk6I7IV7YEU26iKYJvi2mKEqWcdTDboI'
 
+# === Configura Gemini explicitamente ===
+genai.configure(api_key=GEMINI_API_KEY)
+
 # === Memória simples por IP (volátil) ===
 conversas: Dict[str, Dict] = {}
 
@@ -26,9 +29,9 @@ def identificar_materia(tema):
     return None
 
 # === Buscar vídeos escolares ===
-def buscar_videos_escolares(tema, api_key, max_results=5):
+def buscar_videos_escolares(tema, materia, api_key, max_results=5):
     youtube = build('youtube', 'v3', developerKey=api_key)
-    consulta = f"{tema} explicação escolar aula"
+    consulta = f"{tema} {materia} explicação escolar aula"
 
     resposta = youtube.search().list(
         q=consulta,
@@ -56,8 +59,7 @@ def buscar_videos_escolares(tema, api_key, max_results=5):
     return resultados
 
 # === Gerar questões com Gemini ===
-def gerar_questoes_gemini(tema, videos, api_key, num_questoes=10):
-    genai.configure(api_key=api_key)
+def gerar_questoes_gemini(tema, videos, num_questoes=10):
     modelo = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
 
     detalhes_videos = "\n\n".join(
@@ -68,7 +70,8 @@ def gerar_questoes_gemini(tema, videos, api_key, num_questoes=10):
 Você é um assistente educacional. 
 Com base nos seguintes vídeos e suas descrições sobre o tema \"{tema}\", 
 gere {num_questoes} questões objetivas, curtas e de nível escolar (ensino médio).
-As perguntas devem estar diretamente relacionadas ao conteúdo sugerido pelos vídeos e sem dar o gabarito.
+As perguntas devem estar diretamente relacionadas ao conteúdo sugerido pelos vídeos, sem dar o gabarito,
+e sempre de múltipla escolha com opções de A até E.
 
 Vídeos:
 {detalhes_videos}
@@ -76,24 +79,6 @@ Vídeos:
 
     resposta = modelo.generate_content(prompt)
     return resposta.text.strip()
-
-# === Execução por terminal ===
-def executar_pesquisa(tema, num_videos=5, num_questoes=10):
-    materia = identificar_materia(tema)
-
-    if not materia:
-        print(f"❌ Tema '{tema}' não é permitido.")
-        return
-
-    print(f"\n📚 Tema aceito: '{tema.title()}' (Matéria: {materia.title()})")
-    videos = buscar_videos_escolares(tema, YOUTUBE_API_KEY, max_results=num_videos)
-
-    for i, video in enumerate(videos, 1):
-        print(f"{i}. {video['titulo']}\n   Canal: {video['canal']}\n   Link: {video['link']}\n")
-
-    print(f"🧠 Gerando {num_questoes} questões...\n")
-    questoes = gerar_questoes_gemini(tema, videos, GEMINI_API_KEY, num_questoes=num_questoes)
-    print(questoes)
 
 # === FASTAPI ===
 app = FastAPI()
@@ -127,7 +112,7 @@ async def perguntar(pergunta: Pergunta, request: Request):
         videos_anteriores = conversa.get("videos", [])
         num_videos = int(re.search(r"(\d{1,2})", texto).group(1)) if re.search(r"(\d{1,2})", texto) else 5
 
-        novos_videos = buscar_videos_escolares(tema, YOUTUBE_API_KEY, max_results=num_videos)
+        novos_videos = buscar_videos_escolares(tema, materia, YOUTUBE_API_KEY, max_results=num_videos)
         ids_existentes = {v["link"].split("=")[-1] for v in videos_anteriores}
         novos_unicos = [v for v in novos_videos if v["link"].split("=")[-1] not in ids_existentes]
 
@@ -135,7 +120,7 @@ async def perguntar(pergunta: Pergunta, request: Request):
         conversas[user_ip]["etapa"] = "aguardando_questoes"
 
         return {
-            "resposta": f"Aqui estão mais vídeos sobre '{tema}' (Matéria: {materia}). Deseja gerar novas questões?",
+            "resposta": f"Aqui estão mais vídeos sobre '{tema}' (Matéria: {materia}). Quantas questões deseja gerar agora?",
             "videos": novos_unicos,
             "questoes": ""
         }
@@ -147,7 +132,7 @@ async def perguntar(pergunta: Pergunta, request: Request):
         videos = conversa.get("videos", [])
         num_q = int(re.search(r"(\d{1,2})", texto).group(1)) if re.search(r"(\d{1,2})", texto) else 10
 
-        questoes = gerar_questoes_gemini(tema, videos, GEMINI_API_KEY, num_questoes=num_q)
+        questoes = gerar_questoes_gemini(tema, videos, num_questoes=num_q)
         conversas[user_ip]["etapa"] = "finalizado"
 
         return {
@@ -163,7 +148,7 @@ async def perguntar(pergunta: Pergunta, request: Request):
         videos = conversa["videos"]
         materia = identificar_materia(tema)
 
-        questoes = gerar_questoes_gemini(tema, videos, GEMINI_API_KEY, num_questoes=num_questoes)
+        questoes = gerar_questoes_gemini(tema, videos, num_questoes=num_questoes)
         conversas[user_ip]["etapa"] = "finalizado"
 
         return {
@@ -177,7 +162,7 @@ async def perguntar(pergunta: Pergunta, request: Request):
         num_videos = int(texto)
         tema = conversa["tema"]
         materia = identificar_materia(tema)
-        videos = buscar_videos_escolares(tema, YOUTUBE_API_KEY, max_results=num_videos)
+        videos = buscar_videos_escolares(tema, materia, YOUTUBE_API_KEY, max_results=num_videos)
 
         conversas[user_ip]["videos"] = videos
         conversas[user_ip]["etapa"] = "aguardando_questoes"
@@ -209,10 +194,3 @@ async def perguntar(pergunta: Pergunta, request: Request):
         "videos": [],
         "questoes": ""
     }
-
-# Execução via terminal
-if __name__ == "__main__":
-    tema = input("Digite um tema escolar: ").strip().lower()
-    num_videos = int(input("Quantos vídeos? (padrão 5): ") or "5")
-    num_questoes = int(input("Quantas questões? (padrão 10): ") or "10")
-    executar_pesquisa(tema, num_videos, num_questoes)
