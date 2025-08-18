@@ -80,6 +80,7 @@ body {
 .title {
   font-size: 24px;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .title span {
@@ -127,7 +128,7 @@ p {
 }
 
 .input-bar1 {
-  margin-top: 200px;
+  margin-top: 275px;
 }
 
 .input-bar1 input,

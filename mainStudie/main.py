@@ -38,7 +38,10 @@ def buscar_videos_escolares(tema, materia, api_key, max_results=5):
         part='snippet',
         type='video',
         maxResults=max_results,
-        safeSearch='strict'
+        safeSearch='strict',
+        videoDuration='medium', # Vídeos de duração média
+        order='rating', # Ordenar por relevância
+        relevanceLanguage='pt'  # Relevância para o português
     ).execute()
 
     resultados = []
