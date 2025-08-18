@@ -27,7 +27,7 @@ def identificar_materia(tema):
             if t in tema:
                 return materia
     return None
-    
+
 # === Buscar vídeos escolares ===
 def buscar_videos_escolares(tema, materia, api_key, max_results=5):
     youtube = build('youtube', 'v3', developerKey=api_key)
@@ -38,7 +38,10 @@ def buscar_videos_escolares(tema, materia, api_key, max_results=5):
         part='snippet',
         type='video',
         maxResults=max_results,
-        safeSearch='strict'
+        safeSearch='strict',
+        videoDuration='medium', # Vídeos de duração média
+        order='rating', # Ordenar por relevância
+        relevanceLanguage='pt'  # Relevância para o português
     ).execute()
 
     resultados = []
@@ -120,9 +123,9 @@ async def perguntar(pergunta: Pergunta, request: Request):
         conversas[user_ip]["etapa"] = "aguardando_questoes"
 
         return {
-            "resposta": f"Aqui estão mais vídeos sobre '{tema}' (Matéria: {materia}). Quantas questões deseja gerar agora?",
+            "resposta": f"Aqui estão mais vídeos sobre '{tema}' (Matéria: {materia}):",
             "videos": novos_unicos,
-            "questoes": ""
+            "questoes": "Quantas questões deseja gerar agora?"
         }
 
     # === INTENÇÃO: mais questões ===
@@ -168,9 +171,9 @@ async def perguntar(pergunta: Pergunta, request: Request):
         conversas[user_ip]["etapa"] = "aguardando_questoes"
 
         return {
-            "resposta": f"Aqui estão os vídeos sobre '{tema}' (Matéria: {materia}). Quantas questões você deseja gerar?",
+            "resposta": f"Aqui estão os vídeos sobre '{tema}' (Matéria: {materia}):",
             "videos": videos,
-            "questoes": ""
+            "questoes": "Quantas questões você deseja gerar?"
         }
 
     # === Etapa 1 – novo tema ===
