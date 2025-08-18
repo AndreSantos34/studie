@@ -25,6 +25,8 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -45,20 +47,48 @@ body {
   text-align: center;
   display: block;
   width: 100%;
-  box-sizing: border-box;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.sidebar a:hover {
+  background-color: #6889ad;
+  transform: translateX(3px);
 }
 
 .sidebar .footer-link {
   font-size: 14px;
-  padding-top: 10px;
   margin-top: 20px;
   color: white;
+  opacity: 0.8;
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.menu-btn {
+  background-color: #a1b4cf;
+  color: white;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.menu-btn:hover {
+  background-color: #7a9abd;
 }
 
 /* === Main Content === */
 .main {
   flex: 1;
-  padding: 40px;
+  margin-top: 40px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -67,7 +97,7 @@ body {
 
 .user-btn {
   position: absolute;
-  top: 20px;
+  top: 10px;
   right: 20px;
   background-color: #cbd6e2;
   padding: 10px 20px;
@@ -75,6 +105,11 @@ body {
   font-size: 14px;
   cursor: pointer;
   z-index: 1;
+  transition: background-color 0.3s;
+}
+
+.user-btn:hover {
+  background-color: #b0c2d9;
 }
 
 .title {
@@ -96,6 +131,8 @@ p {
   font-size: 16px;
   max-width: 600px;
   line-height: 1.6;
+  margin: 0 auto;
+  text-align: justify;
 }
 
 /* === Chat === */
@@ -114,10 +151,11 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 20px 40px 20px 10px;
+  padding: 20px 40px 80px 10px; /* mais espaço p/ input */
   width: 100%;
 }
 
+/* Input Bars */
 .input-bar1,
 .input-bar2 {
   background-color: transparent;
@@ -125,10 +163,10 @@ p {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.input-bar1 {
-  margin-top: 275px;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
 }
 
 .input-bar1 input,
@@ -141,6 +179,13 @@ p {
   background-color: #7a9abd;
   height: 50px;
   color: white;
+  outline: none;
+  transition: box-shadow 0.3s;
+}
+
+.input-bar1 input:focus,
+.input-bar2 input:focus {
+  box-shadow: 0 0 0 3px rgba(122, 154, 189, 0.5);
 }
 
 .input-bar1 button,
@@ -154,6 +199,12 @@ p {
   cursor: pointer;
   height: 50px;
   width: 50px;
+  transition: background-color 0.3s;
+}
+
+.input-bar1 button:hover,
+.input-bar2 button:hover {
+  background-color: #7a9abd;
 }
 
 /* === Mensagens === */
@@ -165,6 +216,7 @@ p {
   max-width: 80%;
   margin: 5px 0;
   word-wrap: break-word;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .user-msg {
@@ -176,6 +228,7 @@ p {
   max-width: 80%;
   position: relative;
   word-wrap: break-word;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .user-msg::after {
@@ -205,6 +258,40 @@ p {
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-right: 10px solid #a1b4cf;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* começa de cima */
+  align-items: center;
+  text-align: justify;
+  min-height: calc(100vh - 80px);
+  padding: 60px 20px 20px; /* mais espaço em cima */
+}
+
+.home-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.home-container p {
+  max-width: 750px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+.home-container ul {
+  list-style: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+.home-container li {
+  margin: 6px 0;
+  font-style: italic;
 }
 
 /* === Responsividade === */
@@ -258,6 +345,12 @@ p {
 
   .title {
     font-size: 20px;
+  }
+
+  .textmain {
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .text {

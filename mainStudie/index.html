@@ -11,7 +11,7 @@
       <div class="sidebar">
         <div>
           <div class="logo"><a href="#">Studie </a></div>
-          <a href="#">Histórico</a>
+          <a href="./ExtraScrens/history.html">Histórico</a>
           <a href="#" id="newChatBtn" style="display: none">Novo chat</a>
           <a href="#">Documentação</a>
         </div>
@@ -20,12 +20,13 @@
         </div>
       </div>
 
+      <header class="topbar">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <button class="user-btn" onclick="openUserPage()">usuário</button>
+      </header>
+
       <!-- Main Content -->
       <div class="main">
-        <header class="topbar">
-          <button class="user-btn" onclick="openUserPage()">usuário</button>
-        </header>
-
         <!-- Intro Section -->
         <div
           class="intro"
@@ -36,17 +37,19 @@
             padding-right: 80px;
           "
         >
-          <div class="title">Como o <span>Studie</span> funciona:</div>
+          <div class="home-container">
+            <div class="title">Como o <span>Studie</span> funciona:</div>
 
-          <div class="text" style="margin-bottom: 10px">
             <p>
               Diga ao Studie qual o tema da matéria que está com dificuldades e
               veja ele preparar um material perfeito para seus estudos, com
-              vídeo aulas sobre o tema e perguntas para a prática.<br /><br />
-              Você pode pedir, por exemplo:<br />
-              - "Frações"<br />
-              - "Quero 3 vídeos"<br />
-              - "Me dê mais 5 questões"<br />
+              vídeo aulas sobre o tema e perguntas para a prática. Você pode
+              pedir, por exemplo:
+              <br />
+              <br />
+              - "Frações" <br />
+              - "Quero 3 vídeos" <br />
+              - "Me dê mais 5 questões"
             </p>
           </div>
 
@@ -56,7 +59,7 @@
               id="entrada-inicial"
               placeholder="    O que deseja estudar?"
             />
-            <button onclick="enviainicia()">enviar</button>
+            <button onclick="enviainicia()">></button>
           </div>
         </div>
 

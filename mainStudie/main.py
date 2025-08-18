@@ -70,13 +70,24 @@ def gerar_questoes_gemini(tema, videos, num_questoes=10):
     )
 
     prompt = f"""
-Você é um assistente educacional. 
-Com base nos seguintes vídeos e suas descrições sobre o tema \"{tema}\", 
-gere {num_questoes} questões objetivas, curtas e de nível escolar (ensino médio).
-As perguntas devem estar diretamente relacionadas ao conteúdo sugerido pelos vídeos, sem dar o gabarito,
-e sempre de múltipla escolha com opções de A até E.
+        Você é um assistente educacional. 
+        Com base nos seguintes vídeos e suas descrições sobre o tema "{tema}", 
+        gere {num_questoes} questões objetivas, curtas e de nível escolar (ensino médio).
 
-Vídeos:
+        Regras obrigatórias:
+        - Cada questão deve ter enunciado claro.
+        - Sempre 5 alternativas: A, B, C, D, E.
+        - NÃO forneça o gabarito.
+        - Numere as questões de 1 até {num_questoes}.
+        - Formato exatamente assim:
+
+        1) Pergunta aqui?
+        A) Alternativa 1
+        B) Alternativa 2
+        C) Alternativa 3
+        D) Alternativa 4
+        E) Alternativa 5
+        Vídeos:
 {detalhes_videos}
     """
 
@@ -93,12 +104,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+from starlette.staticfiles import StaticFiles
+
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static"
+)
+
+
+from fastapi.responses import FileResponse
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
-    return FileResponse("index.html")
-
+    return FileResponse("index.html", headers={
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+    })
+    
 class Pergunta(BaseModel):
     texto: str
 
