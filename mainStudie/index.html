@@ -1,17 +1,86 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>studie</title>
-    <link rel="stylesheet" href="/static/style.css" />
-  </head>
-  <body>
-    <div id="chat-box"></div>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Studie</title>
+  <link rel="stylesheet" href="static/style.css" />  
 
-    <input type="text" id="entrada" placeholder="Digite um tema escolar..." />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="logo"><a href="#">Studie</a></div>
+        <a href="./ExtraScrens/history.html">Histórico</a>
+        <a href="#" id="newChatBtn" style="display: none">Novo chat</a>
+        <a href="#">Documentação</a>
+      </div>
+<div class="footer-link">
+        <a href="#">sobre nós</a>
+      </div>
+    </div>
+      </div>
 
-    <button onclick="enviar()">Enviar</button>
+      
 
-    <script src="/static/script.js"></script>
-  </body>
+    <!-- Botão flutuante (fora da sidebar) -->
+    <button class="menu-btn floating" onclick="toggleSidebar()">☰</button>
+
+    <header class="topbar">
+      <button class="user-btn" onclick="openUserPage()">usuário</button>
+    </header>
+
+    <div class="main-container">
+      <!-- Main Content -->
+      <div class="main">
+        <!-- Intro Section -->
+        <div class="intro">
+          <div class="home-container">
+            <div class="title">Como o <span>Studie</span> funciona:</div>
+
+            <p>
+              Diga ao Studie qual o tema da matéria que está com dificuldades e
+              veja ele preparar um material perfeito para seus estudos, com
+              vídeo aulas sobre o tema e perguntas para a prática. Você pode
+              pedir, por exemplo:
+              <br />
+              <br />
+              - "Frações" <br />
+              - "Quero 3 vídeos" <br />
+              - "Me dê mais 5 questões"
+            </p>
+          </div>
+
+          <div class="input-bar1">
+            <input
+              type="text"
+              id="entrada-inicial"
+              placeholder="O que deseja estudar?"
+            />
+            <button onclick="enviainicia()">^</button>
+          </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-section" id="chat-box" style="display: none">
+          <div class="chat-mensagens" id="chat-mensagens">
+            <!-- Mensagens aparecem aqui -->
+          </div>
+          <div class="input-bar2">
+            <input
+              type="text"
+              id="entrada"
+              placeholder="Digite sua mensagem..."
+            />
+            <button onclick="enviar()">^</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/script.js"></script>
+</body>
 </html>
