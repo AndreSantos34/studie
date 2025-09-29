@@ -214,7 +214,7 @@ TEMAS_POR_MATERIA = {
   "história cultural", "arte medieval", "arte renascentista", "arte barroca", "arte moderna", "arte contemporânea",
   "história da ciência", "cientistas famosos", "descobertas científicas", "inovações tecnológicas", "história da educação",
   "história da religião", "cristianismo", "islamismo", "judaísmo", "budismo",
-  "história da política", "formação de estados", "constituições", "partidos políticos", "eleições"
+  "história da política", "formação de estados", "constituições", "partidos políticos", "eleições", "guerra fria"
 ],
 
 "geografia": [

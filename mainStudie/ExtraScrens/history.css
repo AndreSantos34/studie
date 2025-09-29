@@ -1,0 +1,50 @@
+/* === Histórico === */
+.history-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+}
+
+.history-item {
+  border-bottom: 1px solid #999;
+  padding: 15px 10px;
+}
+
+.history-item a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background-color 0.2s, transform 0.2s;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.history-item a:hover {
+  background-color: rgba(161, 180, 207, 0.3);
+  transform: translateX(4px);
+}
+
+.history-item h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.history-item p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* === Main container responsivo com sidebar === */
+.main-container {
+  flex: 1;
+  padding-top: 50px; /* espaço da topbar */
+  padding-left: 250px; /* espaço padrão da sidebar */
+  transition: padding-left 0.3s ease;
+}
+
+/* Quando sidebar fecha → ocupa tela cheia */
+.sidebar.collapsed ~ .main-container {
+  padding-left: 0;
+}

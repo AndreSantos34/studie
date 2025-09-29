@@ -1,3 +1,60 @@
+// Inicialização quando o DOM estiver carregado
+document.addEventListener("DOMContentLoaded", function () {
+  const sidebar = document.querySelector(".sidebar");
+  const floatingBtn = document.querySelector(".menu-btn.floating");
+
+  // Garantir que o botão flutuante comece oculto
+  floatingBtn.style.display = "none";
+
+  // Configurar o botão "Novo chat" para também alternar a sidebar
+  const newChatBtn = document.getElementById("newChatBtn");
+  if (newChatBtn) {
+    newChatBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      toggleSidebar();
+    });
+  }
+
+  // Adicionar event listeners para os campos de entrada
+  const inputInicial = document.getElementById("entrada-inicial");
+  if (inputInicial) {
+    inputInicial.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        enviainicia();
+      }
+    });
+  }
+
+  const input = document.getElementById("entrada");
+  if (input) {
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        enviar();
+      }
+    });
+  }
+});
+
+// Função para alternar a sidebar
+function toggleSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  const floatingBtn = document.querySelector(".menu-btn.floating");
+  const mainContainer = document.querySelector(".main-container"); // peguei a main
+
+  sidebar.classList.toggle("hidden");
+
+  if (sidebar.classList.contains("hidden")) {
+    floatingBtn.style.display = "block";
+    mainContainer.classList.add("fullscreen"); // <<< aqui entra o modo tela cheia
+  } else {
+    floatingBtn.style.display = "none";
+    mainContainer.classList.remove("fullscreen"); // <<< remove quando reabre a sidebar
+  }
+}
+
+// Função para mostrar resposta com efeito de digitação
 async function mostrarRespostaComDigitacao(container, textoCompleto) {
   return new Promise((resolve) => {
     let i = 0;
@@ -18,6 +75,7 @@ async function mostrarRespostaComDigitacao(container, textoCompleto) {
   });
 }
 
+// Função para enviar mensagem
 async function enviar() {
   const input = document.getElementById("entrada");
   const mensagens = document.getElementById("chat-mensagens");
@@ -82,26 +140,6 @@ async function enviar() {
   }
 }
 
-const inputInicial = document.getElementById("entrada-inicial");
-if (inputInicial) {
-  inputInicial.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      enviainicia();
-    }
-  });
-}
-
-const input = document.getElementById("entrada");
-if (input) {
-  input.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      enviar();
-    }
-  });
-}
-
 function iniciarChat() {
   document.querySelector(".intro").style.display = "none";
   document.getElementById("chat-box").style.display = "flex";
@@ -124,9 +162,4 @@ function enviainicia() {
     entradaInicial.value = "";
   }
   enviar();
-}
-
-function toggleSidebar() {
-  const sidebar = document.querySelector(".sidebar");
-  sidebar.classList.toggle("hidden");
 }

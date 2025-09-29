@@ -5,4 +5,4 @@ google-generativeai
 pydantic
 
 # pip install -r requirements.txt
-# python -m uvicorn main:app --reload - rodar codigo
+# rodar: python -m uvicorn main:app --reload
