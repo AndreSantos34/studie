@@ -1,8 +1,66 @@
+// Inicialização quando o DOM estiver carregado
+document.addEventListener("DOMContentLoaded", function() {
+  const sidebar = document.querySelector(".sidebar");
+  const floatingBtn = document.querySelector(".menu-btn.floating");
+  
+  // Garantir que o botão flutuante comece oculto
+  floatingBtn.style.display = "none";
+  
+  // Configurar o botão "Novo chat" para também alternar a sidebar
+  const newChatBtn = document.getElementById("newChatBtn");
+  if (newChatBtn) {
+    newChatBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      toggleSidebar();
+    });
+  }
+  
+  // Adicionar event listeners para os campos de entrada
+  const inputInicial = document.getElementById("entrada-inicial");
+  if (inputInicial) {
+    inputInicial.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        enviainicia();
+      }
+    });
+  }
+
+  const input = document.getElementById("entrada");
+  if (input) {
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        enviar();
+      }
+    });
+  }
+});
+
+// Função para alternar a sidebar
+function toggleSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  const floatingBtn = document.querySelector(".menu-btn.floating");
+  const mainContainer = document.querySelector(".main-container"); // peguei a main
+
+  sidebar.classList.toggle("hidden");
+  
+  if (sidebar.classList.contains("hidden")) {
+    floatingBtn.style.display = "block";
+    mainContainer.classList.add("fullscreen");   // <<< aqui entra o modo tela cheia
+  } else {
+    floatingBtn.style.display = "none";
+    mainContainer.classList.remove("fullscreen"); // <<< remove quando reabre a sidebar
+  }
+}
+
+
+// Função para mostrar resposta com efeito de digitação
 async function mostrarRespostaComDigitacao(container, textoCompleto) {
   return new Promise((resolve) => {
     let i = 0;
-    const velocidade = 10; // ms por caractere
-    container.innerHTML = ""; // limpa
+    const velocidade = 10;
+    container.innerHTML = "";
 
     function digitar() {
       if (i < textoCompleto.length) {
@@ -18,30 +76,19 @@ async function mostrarRespostaComDigitacao(container, textoCompleto) {
   });
 }
 
+// Função para enviar mensagem
 async function enviar() {
   const input = document.getElementById("entrada");
-  const chatBox = document.getElementById("chat-box");
+  const mensagens = document.getElementById("chat-mensagens");
   const texto = input.value.trim();
 
   if (!texto) return;
 
-  // Exibe a mensagem do usuário
-  chatBox.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
+  // Exibe mensagem do usuário
+  mensagens.innerHTML += `<div class="user-msg bolha"><p>${texto}</p></div>`;
   input.value = "";
 
-  // Cria bolha com indicador "digitando..."
-  let botBolha = document.createElement("div");
-  botBolha.classList.add("bot-msg", "bolha");
-  botBolha.innerHTML = `
-    <div class="typing-indicator">
-      <span></span><span></span><span></span>
-    </div>
-  `;
-  chatBox.appendChild(botBolha);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
   try {
-    // Faz a requisição
     const resposta = await fetch("http://localhost:8000/perguntar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,12 +97,21 @@ async function enviar() {
 
     const data = await resposta.json();
 
-    // Substitui o indicador pelo texto da resposta
-    botBolha.innerHTML = `<p class="typing"></p>`;
-    const p = botBolha.querySelector("p.typing");
+    // Cria bolha do bot para resposta principal
+    const botDiv = document.createElement("div");
+    botDiv.classList.add("bot-msg", "bolha");
+
+    const p = document.createElement("p");
+    p.classList.add("typing");
+    botDiv.appendChild(p);
+
+    mensagens.appendChild(botDiv);
+    mensagens.scrollTop = mensagens.scrollHeight;
+
+    // Escreve resposta principal
     await mostrarRespostaComDigitacao(p, data.resposta);
 
-    // Depois adiciona vídeos, se houver
+    // Se vieram vídeos
     if (data.videos && data.videos.length > 0) {
       let ul = document.createElement("ul");
       data.videos.forEach((v) => {
@@ -63,53 +119,48 @@ async function enviar() {
         li.innerHTML = `<a href="${v.link}" target="_blank">${v.titulo}</a> - ${v.canal}`;
         ul.appendChild(li);
       });
-      chatBox.querySelector("div.bot-msg.bolha:last-child").appendChild(ul);
-
-      // Após os vídeos, nova bolha com a pergunta sobre questões
-      chatBox.innerHTML += `<div class="bot-msg bolha"><p class="typing"></p></div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      const novaPergunta = chatBox.querySelector(
-        "div.bot-msg.bolha:last-child p.typing"
-      );
-      await mostrarRespostaComDigitacao(
-        novaPergunta,
-        "Quantas questões você deseja gerar?"
-      );
+      botDiv.appendChild(ul);
     }
 
-    // Depois adiciona questões, se houver
+    // Se vier pergunta OU lista de questões -> sempre em bolha separada
     if (data.questoes) {
-      let questoesBolha = document.createElement("div");
-      questoesBolha.classList.add("bot-msg", "bolha");
-      questoesBolha.innerHTML = `
-        <div class="typing-indicator">
-          <span></span><span></span><span></span>
-        </div>
-      `;
-      chatBox.appendChild(questoesBolha);
-      chatBox.scrollTop = chatBox.scrollHeight;
+      const botQuestDiv = document.createElement("div");
+      botQuestDiv.classList.add("bot-msg", "bolha");
 
-      // Troca indicador pelas questões reais
-      questoesBolha.innerHTML = `<p>${data.questoes.replace(
-        /\n/g,
-        "<br>"
-      )}</p>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
+      let pQuest = document.createElement("p");
+      pQuest.innerHTML = data.questoes.replace(/\n/g, "<br>");
+
+      botQuestDiv.appendChild(pQuest);
+      mensagens.appendChild(botQuestDiv);
     }
 
-    chatBox.scrollTop = chatBox.scrollHeight;
+    mensagens.scrollTop = mensagens.scrollHeight;
   } catch (erro) {
     console.error("Erro ao enviar pergunta:", erro);
-    chatBox.innerHTML += `<div class="bot-msg bolha">❌ Erro ao se comunicar com o servidor.</div>`;
+    mensagens.innerHTML += `<div class="bot-msg bolha">❌ Erro ao se comunicar com o servidor.</div>`;
   }
 }
 
-// Envia ao apertar Enter
-const input = document.getElementById("entrada");
-input.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    enviar();
+function iniciarChat() {
+  document.querySelector(".intro").style.display = "none";
+  document.getElementById("chat-box").style.display = "flex";
+  document.getElementById("newChatBtn").style.display = "block";
+}
+
+function openUserPage() {
+  alert("Abrir página de conta do usuário");
+}
+
+function enviainicia() {
+  iniciarChat();
+  const intro = document.querySelector(".intro");
+  if (intro) intro.style.display = "none";
+
+  const entradaInicial = document.getElementById("entrada-inicial");
+  const entradaChat = document.getElementById("entrada");
+  if (entradaInicial && entradaChat) {
+    entradaChat.value = entradaInicial.value;
+    entradaInicial.value = "";
   }
-});
+  enviar();
+}
