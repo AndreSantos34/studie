@@ -1,20 +1,20 @@
 // Inicialização quando o DOM estiver carregado
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
   const sidebar = document.querySelector(".sidebar");
   const floatingBtn = document.querySelector(".menu-btn.floating");
-
+  
   // Garantir que o botão flutuante comece oculto
   floatingBtn.style.display = "none";
-
+  
   // Configurar o botão "Novo chat" para também alternar a sidebar
   const newChatBtn = document.getElementById("newChatBtn");
   if (newChatBtn) {
-    newChatBtn.addEventListener("click", function (e) {
+    newChatBtn.addEventListener("click", function(e) {
       e.preventDefault();
       toggleSidebar();
     });
   }
-
+  
   // Adicionar event listeners para os campos de entrada
   const inputInicial = document.getElementById("entrada-inicial");
   if (inputInicial) {
@@ -44,15 +44,16 @@ function toggleSidebar() {
   const mainContainer = document.querySelector(".main-container"); // peguei a main
 
   sidebar.classList.toggle("hidden");
-
+  
   if (sidebar.classList.contains("hidden")) {
     floatingBtn.style.display = "block";
-    mainContainer.classList.add("fullscreen"); // <<< aqui entra o modo tela cheia
+    mainContainer.classList.add("fullscreen");   // <<< aqui entra o modo tela cheia
   } else {
     floatingBtn.style.display = "none";
     mainContainer.classList.remove("fullscreen"); // <<< remove quando reabre a sidebar
   }
 }
+
 
 // Função para mostrar resposta com efeito de digitação
 async function mostrarRespostaComDigitacao(container, textoCompleto) {

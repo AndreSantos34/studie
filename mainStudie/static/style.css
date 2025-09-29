@@ -14,7 +14,7 @@ body {
 
 .app-container {
   display: flex;
-  min-height: 0px;
+  min-height:0px;
   position: relative;
 }
 
@@ -102,15 +102,9 @@ body {
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 /* === Topbar === */
@@ -142,7 +136,7 @@ body {
   border-color: transparent;
   border-radius: 30px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 600; 
   cursor: pointer;
   outline: none;
   position: relative;
@@ -173,6 +167,7 @@ body {
   height: 100%;
   transition: all 0.3s ease;
 }
+
 
 .sidebar.hidden ~ .main-container {
   margin-left: 0;
@@ -418,7 +413,7 @@ p {
 /* se quiser efeito de transição suave ao entrar/saír do fullscreen */
 .sidebar.hidden ~ .main-container,
 .main-container.fullscreen {
-  transition: all 0.5s ease;
+  transition: all 0.50s ease;
 }
 /* === Responsividade === */
 
@@ -427,15 +422,15 @@ p {
   .sidebar {
     width: 200px;
   }
-
+  
   .topbar {
     left: 200px;
   }
-
+  
   .main-container {
     margin-left: 200px;
   }
-
+  
   .input-bar1,
   .input-bar2 {
     width: calc(100% - 200px);
@@ -449,18 +444,18 @@ p {
     z-index: 1000;
     height: 100%;
   }
-
+  
   .topbar {
     left: 0;
     z-index: 950;
   }
-
+  
   .main-container {
     margin-left: 0;
     margin-top: 60px;
     z-index: 800;
   }
-
+  
   .input-bar1,
   .input-bar2 {
     width: 100%;
@@ -475,23 +470,25 @@ p {
     width: 100%;
     max-width: 250px;
   }
-
+  
   .title {
     font-size: 20px;
   }
-
+  
   .title span {
     font-size: 28px;
   }
-
+  
   .input-bar1 input,
   .input-bar2 input {
     font-size: 14px;
   }
-
+  
   .bolha {
     max-width: 90%;
     font-size: 14px;
     padding: 12px 15px;
   }
 }
+
+
