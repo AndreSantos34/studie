@@ -4,10 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/style.css" />
+    <link rel="stylesheet" href="history.css"/>
     <link rel="icon" href="../static/favicon.ico" />
     <title>Histórico</title>
   </head>
   <body>
-    <h1>Você esta no Histórico</h1>
+    
+   <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="logo"><a href="../index.html">Studie</a></div>
+        <a href="../index.html">Voltar</a>
+        <a href="#">Documentação</a>
+      </div>
+      <div class="footer-link">
+        <a href="#">sobre nós</a>
+      </div>
+    </div>
+
+    <!-- Botão flutuante (fora da sidebar) -->
+    <button class="menu-btn floating" onclick="toggleSidebar()">☰</button>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="user-btn" onclick="openUserPage()">usuário</button>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <div class="main-container">
+      <div class="main">
+        <div class="history-container">
+          <div class="history-item">
+            <a href="../index.html?id=chat1">
+              <h3>Lorem</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </a>
+          </div>
+          <div class="history-item">
+            <a href="../index.html?id=chat2">
+              <h3>Nulla</h3>
+              <p>Nulla diam enim, porttitor ornare ligula a, dictum faucibus nisi.</p>
+            </a>
+          </div>
+          <div class="history-item">
+            <a href="../index.html?id=chat3">
+              <h3>Ipsum</h3>
+              <p>Pellentesque sit amet lorem nunc.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/script.js"></script>
   </body>
 </html>
