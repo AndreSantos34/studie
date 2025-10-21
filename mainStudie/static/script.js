@@ -1,20 +1,20 @@
 // Inicialização quando o DOM estiver carregado
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.querySelector(".sidebar");
   const floatingBtn = document.querySelector(".menu-btn.floating");
-  
+
   // Garantir que o botão flutuante comece oculto
   floatingBtn.style.display = "none";
-  
+
   // Configurar o botão "Novo chat" para também alternar a sidebar
   const newChatBtn = document.getElementById("newChatBtn");
   if (newChatBtn) {
-    newChatBtn.addEventListener("click", function(e) {
+    newChatBtn.addEventListener("click", function (e) {
       e.preventDefault();
       toggleSidebar();
     });
   }
-  
+
   // Adicionar event listeners para os campos de entrada
   const inputInicial = document.getElementById("entrada-inicial");
   if (inputInicial) {
@@ -44,16 +44,15 @@ function toggleSidebar() {
   const mainContainer = document.querySelector(".main-container"); // peguei a main
 
   sidebar.classList.toggle("hidden");
-  
+
   if (sidebar.classList.contains("hidden")) {
     floatingBtn.style.display = "block";
-    mainContainer.classList.add("fullscreen");   // <<< aqui entra o modo tela cheia
+    mainContainer.classList.add("fullscreen"); // <<< aqui entra o modo tela cheia
   } else {
     floatingBtn.style.display = "none";
     mainContainer.classList.remove("fullscreen"); // <<< remove quando reabre a sidebar
   }
 }
-
 
 // Função para mostrar resposta com efeito de digitação
 async function mostrarRespostaComDigitacao(container, textoCompleto) {
@@ -163,4 +162,89 @@ function enviainicia() {
     entradaInicial.value = "";
   }
   enviar();
+}
+
+// login flip card
+
+const flipCard = document.getElementById("flip-card");
+const toRegister = document.getElementById("to-register");
+const toLogin = document.getElementById("to-login");
+
+toRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+  flipCard.classList.add("flipped");
+});
+
+toLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  flipCard.classList.remove("flipped");
+});
+
+// pop up
+
+// Função para abrir/fechar o popup do usuário
+function toggleUserPopup() {
+  const popup = document.getElementById("user-popup");
+  popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+}
+
+// Fecha o popup ao clicar fora
+document.addEventListener("click", function (e) {
+  const popup = document.getElementById("user-popup");
+  const userBtn = document.querySelector(".user-btn");
+
+  if (
+    popup &&
+    userBtn &&
+    !popup.contains(e.target) &&
+    !userBtn.contains(e.target)
+  ) {
+    popup.style.display = "none";
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const sidebar = document.querySelector(".sidebar");
+  const floatingBtn = document.querySelector(".menu-btn.floating");
+  floatingBtn.style.display = "none";
+
+  // Simula se o usuário está logado (depois substitua por seu sistema real)
+  const userLoggedIn = false;
+
+  // Intercepta clique no "Histórico"
+  const historicoLink = document.querySelector(
+    'a[href="./ExtraScrens/history.html"]'
+  );
+  if (historicoLink) {
+    historicoLink.addEventListener("click", function (e) {
+      if (!userLoggedIn) {
+        e.preventDefault();
+        abrirLoginPopup();
+      }
+    });
+  }
+
+  // Botões do popup
+  const popupLoginBtn = document.getElementById("popup-login-btn");
+  const popupFecharBtn = document.getElementById("popup-fechar-btn");
+
+  if (popupLoginBtn) {
+    popupLoginBtn.addEventListener("click", function () {
+      fecharLoginPopup();
+      window.location.href = "login.html"; // redireciona para a tela de login
+    });
+  }
+
+  if (popupFecharBtn) {
+    popupFecharBtn.addEventListener("click", fecharLoginPopup);
+  }
+});
+
+// Funções do popup
+function abrirLoginPopup() {
+  document.getElementById("login-popup").style.display = "flex";
+}
+
+function fecharLoginPopup() {
+  document.getElementById("login-popup").style.display = "none";
 }
