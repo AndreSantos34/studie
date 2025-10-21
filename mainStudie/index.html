@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <title>Studie</title>
-  <link rel="stylesheet" href="static/style.css" />  
-  <link rel="stylesheet" href="static/base.css" />  
+  <head>
+    <meta charset="UTF-8" />
+    <title>Studie</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <link rel="stylesheet" href="static/base.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-content">
+          <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+          <div class="logo"><a href="./index.html">Studie</a></div>
+          <a href="./ExtraScrens/history.html">Histórico</a>
+          <a href="./index.html" id="newChatBtn" style="display: none"
+            >Novo chat</a
+          >
+        </div>
 
-</head>
-<body>
-  <div class="app-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-content">
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-        <div class="logo"><a href="#">Studie</a></div>
-        <a href="./ExtraScrens/history.html">Histórico</a>
-        <a href="#" id="newChatBtn" style="display: none">Novo chat</a>
-        <a href="#">Documentação</a>
-      </div>
-<div class="footer-link">
-        <a href="#">sobre nós</a>
+        <div class="footer-link">
+          <a href="#" style="font-size: 15px">sobre nós</a>
+        </div>
       </div>
     </div>
-      </div>
 
     <!-- Botão flutuante (fora da sidebar) -->
     <button class="menu-btn floating" onclick="toggleSidebar()">☰</button>
 
-   <header class="topbar">
-  <button class="user-btn" onclick="toggleUserPopup()">usuário</button>
+    <header class="topbar">
+      <button class="user-btn" onclick="toggleUserPopup()">usuário</button>
 
-  <!-- Popup do usuário -->
-  <div id="user-popup" class="user-popup">
-    <p class="user-email">robson.sim@gmail.com</p>
-    <hr>
-    <a href="#">Personalizar conta</a>
-    <a href="#">Configurações</a>
-    <a href="#">Fale conosco</a>
-    <a href="#">Ajuda</a>
-    <hr>
-    <a href="#">Quem somos?</a>
-    <a href="#">Documentação</a>
-    <hr>
-    <a href="#" class="logout">Sair</a>
-  </div>
-</header>
+      <!-- Popup do usuário -->
+      <div id="user-popup" class="user-popup">
+        <p class="user-email">robson.sim@gmail.com</p>
+        <hr />
+        <a href="#">Personalizar conta</a>
+        <a href="#">Configurações</a>
+        <a href="#">Fale conosco</a>
+        <a href="#">Ajuda</a>
+        <hr />
+        <a href="#">Quem somos?</a>
+        <hr />
+        <a href="./ExtraScrens/login.html" class="logout">Sair</a>
+      </div>
+    </header>
 
     <div class="main-container">
       <!-- Main Content -->
@@ -59,8 +59,7 @@
               veja ele preparar um material perfeito para seus estudos, com
               vídeo aulas sobre o tema e perguntas para a prática. Você pode
               pedir, por exemplo:
-              <br />
-              <br />
+              <br /><br />
               - "Frações" <br />
               - "Quero 3 vídeos" <br />
               - "Me dê mais 5 questões"
@@ -93,8 +92,19 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <script src="static/script.js"></script>
-</body>
+    <!-- Popup de aviso de login -->
+    <div id="login-popup" class="login-popup">
+      <div class="login-popup-content">
+        <h2>Faça login para acessar o histórico</h2>
+        <p>Você precisa estar conectado para ver seu histórico de estudos.</p>
+        <div class="popup-buttons">
+          <button id="popup-login-btn">Fazer login</button>
+          <button id="popup-fechar-btn">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="static/script.js"></script>
+  </body>
 </html>

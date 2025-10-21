@@ -10,19 +10,20 @@
   </head>
   <body>
     
-   <div class="app-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-content">
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-        <div class="logo"><a href="../index.html">Studie</a></div>
-        <a href="../index.html">Voltar</a>
-        <a href="#">Documentação</a>
-      </div>
-      <div class="footer-link">
-        <a href="#">sobre nós</a>
+  <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-content">
+          <div class="logo"><a href="../index.html">Studie</a></div>
+          <a href="#" id="newChatBtn" style="display: none">Novo chat</a>
+        </div>
+
+        <div class="footer-link">
+          <a href="#" style="font-size: 15px">sobre nós</a>
+        </div>
       </div>
     </div>
+
 
     <!-- Botão flutuante (fora da sidebar) -->
     <button class="menu-btn floating" onclick="toggleSidebar()">☰</button>
@@ -41,7 +42,6 @@
     <a href="#">Ajuda</a>
     <hr>
     <a href="#">Quem somos?</a>
-    <a href="#">Documentação</a>
     <hr>
     <a href="#" class="logout">Sair</a>
   </div>

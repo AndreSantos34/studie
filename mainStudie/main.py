@@ -63,7 +63,7 @@ def buscar_videos_escolares(tema, materia, api_key, max_results=5):
 
 # === Gerar questões com Gemini ===
 def gerar_questoes_gemini(tema, videos, num_questoes=10):
-    modelo = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
+    modelo = genai.GenerativeModel(model_name="models/gemini-2.5-flash")
 
     detalhes_videos = "\n\n".join(
         [f"Título: {v['titulo']}\nDescrição: {v['descricao']}" for v in videos]
