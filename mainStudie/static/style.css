@@ -1,115 +1,38 @@
-/* === Reset e Base === */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+/* ============================================================
+   🔹 CONTEÚDO PRINCIPAL (Main Container)
+   ============================================================ */
+.main-container {
+  margin-left: 250px; /* espaço da sidebar */
+  width: calc(100% - 250px);
+  transition: all 0.3s ease;
 }
 
-body {
-  font-family: "Segoe UI", sans-serif;
-  background-color: #c0c8dd;
-  color: #333;
+.main-container.fullscreen {
+  margin-left: 0;
+  width: 100%;
 }
 
-.container {
-  display: flex;
-  height: 100vh;
+.sidebar.hidden ~ .main-container {
+  margin-left: 0;
 }
 
-/* === Sidebar === */
-.sidebar {
-  width: 220px;
-  background-color: #a1b4cf;
+/* Área principal interna */
+.main {
+  flex: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  transition: transform 0.3s ease;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.logo {
-  font-family: "Brush Script MT", cursive;
-  font-size: 36px;
-  color: white;
-  margin-bottom: 40px;
-}
-
-.sidebar a {
-  background-color: #7a9abd;
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  font-size: 18px;
-  text-align: center;
-  display: block;
-  width: 100%;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.sidebar a:hover {
-  background-color: #6889ad;
-  transform: translateX(3px);
-}
-
-.sidebar .footer-link {
-  font-size: 14px;
-  margin-top: 20px;
-  color: white;
-  opacity: 0.8;
-}
-
-.sidebar.hidden {
-  transform: translateX(-100%);
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-}
-
-.menu-btn {
-  background-color: #a1b4cf;
-  color: white;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background-color 0.3s;
-}
-
-.menu-btn:hover {
-  background-color: #7a9abd;
-}
-
-/* === Main Content === */
-.main {
-  flex: 1;
-  margin-top: 40px;
-  position: relative;
+/* Conteúdo introdutório (antes do chat) */
+.intro {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-}
-
-.user-btn {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  background-color: #cbd6e2;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  z-index: 1;
-  transition: background-color 0.3s;
-}
-
-.user-btn:hover {
-  background-color: #b0c2d9;
+  gap: 20px;
+  flex: 1;
+  align-items: center;
 }
 
 .title {
@@ -124,25 +47,31 @@ body {
 }
 
 p {
-  margin-bottom: 1em;
-}
-
-.text {
-  font-size: 16px;
-  max-width: 600px;
   line-height: 1.6;
-  margin: 0 auto;
-  text-align: justify;
 }
 
-/* === Chat === */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: justify;
+  max-width: 800px;
+  margin: 50px;
+}
+
+
+/* ============================================================
+   🔹 CHAT (Mensagens + Input)
+   ============================================================ */
 .chat-section {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   width: 100%;
+  display: none;
 }
 
 .chat-mensagens {
@@ -151,22 +80,33 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 20px 40px 80px 10px; /* mais espaço p/ input */
+  padding: 70px 40px 80px 10px;
   width: 100%;
 }
 
-/* Input Bars */
+
+/* ============================================================
+   🔹 INPUT BAR (Campo de texto + botão enviar)
+   ============================================================ */
 .input-bar1,
 .input-bar2 {
-  background-color: transparent;
+  background-color: #c0c8dd;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
-  position: absolute;
-  bottom: 20px;
+  position: fixed;
+  bottom: 2px;
+  width: calc(100% - 220px);
+  left: 220px;
+  transition: all 0.3s ease;
+}
+
+/* Ajuste quando sidebar está escondida */
+.sidebar.hidden ~ .main-container .input-bar1,
+.sidebar.hidden ~ .main-container .input-bar2 {
+  width: 100%;
   left: 0;
-  right: 0;
 }
 
 .input-bar1 input,
@@ -188,6 +128,11 @@ p {
   box-shadow: 0 0 0 3px rgba(122, 154, 189, 0.5);
 }
 
+.input-bar1 input::placeholder,
+.input-bar2 input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .input-bar1 button,
 .input-bar2 button {
   background-color: #a1b4cf;
@@ -207,7 +152,12 @@ p {
   background-color: #7a9abd;
 }
 
-/* === Mensagens === */
+
+/* ============================================================
+   🔹 MENSAGENS (Bolinhas de conversa)
+   ============================================================ */
+
+/* Mensagem padrão */
 .bolha {
   background-color: #a1b4cf;
   color: #000;
@@ -219,15 +169,15 @@ p {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Mensagem do usuário (direita) */
 .user-msg {
   align-self: flex-end;
-  background-color: #7a9abd;
-  color: white;
-  border-radius: 20px;
-  padding: 10px 15px;
   max-width: 80%;
+  padding: 12px 18px;
+  background-color: #7a9abd;
+  color: #fff;
+  border-radius: 20px 20px 4px 20px;
   position: relative;
-  word-wrap: break-word;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -235,148 +185,45 @@ p {
   content: "";
   position: absolute;
   right: -10px;
-  top: 10px;
+  bottom: 8px;
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 15px solid #7a9abd;
+  border: 10px solid transparent;
+  border-left-color: #7a9abd;
 }
 
+/* Mensagem do bot (esquerda) */
 .bot-msg {
   align-self: flex-start;
+  max-width: 80%;
+  padding: 12px 18px;
+  background-color: #a1b4cf;
+  color: #000;
+  border-radius: 20px 20px 20px 4px;
   position: relative;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .bot-msg::before {
   content: "";
   position: absolute;
   left: -10px;
-  top: 20px;
+  bottom: 8px;
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #a1b4cf;
+  border: 10px solid transparent;
+  border-right-color: #a1b4cf;
 }
 
-.home-container {
+
+/*TELA CHEIA CHAT//
+
+/* Ajuste da área do chat */
+.main-container.fullscreen .chat-section {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* começa de cima */
-  align-items: center;
-  text-align: justify;
-  min-height: calc(100vh - 80px);
-  padding: 60px 20px 20px; /* mais espaço em cima */
-}
-
-.home-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-}
-
-.home-container p {
-  max-width: 750px;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 15px;
-}
-
-.home-container ul {
-  list-style: none;
-  padding-left: 0;
-  text-align: center;
-}
-
-.home-container li {
-  margin: 6px 0;
-  font-style: italic;
-}
-
-/* === Responsividade === */
-
-/* Tablets */
-@media (max-width: 900px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .logo {
-    font-size: 28px;
-    margin-bottom: 0;
-  }
-
-  .sidebar a {
-    font-size: 14px;
-    padding: 8px 12px;
-    margin: 0 5px;
-  }
-
-  .main {
-    padding: 20px;
-  }
-}
-
-/* Celulares */
-@media (max-width: 600px) {
-  .sidebar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .logo {
-    font-size: 24px;
-  }
-
-  .sidebar a {
-    font-size: 14px;
-    width: auto;
-    padding: 8px 10px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .textmain {
-    font-size: 14px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  .text {
-    font-size: 14px;
-  }
-
-  .chat-mensagens {
-    padding: 10px;
-  }
-
-  .input-bar1 input,
-  .input-bar2 input {
-    font-size: 14px;
-    height: 45px;
-  }
-
-  .input-bar1 button,
-  .input-bar2 button {
-    height: 45px;
-    width: 45px;
-    font-size: 16px;
-  }
-
-  .bolha {
-    max-width: 95%;
-    font-size: 14px;
-    padding: 12px 15px;
-  }
+  width: 100%;
+  height: calc(100vh - 160px);
+  overflow-y: auto;
+  padding-bottom: 120px;
 }

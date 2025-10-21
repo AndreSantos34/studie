@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studie - Login/Cadastro</title>
+  <link rel="stylesheet" href="../static/base.css">
+  <link rel="stylesheet" href="../static/login.css">
+</head>
+<body>
+
+  <div class="logo">Studie</div>
+
+  <div class="container">
+    <div class="flip-card" id="flip-card">
+      <div class="flip-card-inner">
+
+        <!-- ====== CARD DE LOGIN ====== -->
+        <div class="flip-card-front">
+          <div class="card">
+            <h2>Login</h2>
+            <label for="login-email">Gmail:</label>
+            <input type="email" id="login-email" placeholder="exemplo@gmail">
+            
+            <label for="login-senha">Senha:</label>
+            <input type="password" id="login-senha" placeholder="*****">
+
+            <button class="btn">Login</button>
+            <p class="texto-alternar">Não possui um cadastro?</p>
+            <a href="#" id="to-register">Fazer cadastro</a>
+          </div>
+        </div>
+
+        <!-- ====== CARD DE CADASTRO ====== -->
+        <div class="flip-card-back">
+          <div class="card">
+            <h2>Cadastro</h2>
+            <label for="cad-email">Gmail:</label>
+            <input type="email" id="cad-email" placeholder="exemplo@gmail">
+            
+            <label for="cad-senha">Senha:</label>
+            <input type="password" id="cad-senha" placeholder="*****">
+
+            <label for="cad-confirm">Confirmar Senha:</label>
+            <input type="password" id="cad-confirm" placeholder="*****">
+
+            <button class="btn">Cadastrar</button>
+            <p class="texto-alternar">Já possui um cadastro?</p>
+            <a href="#" id="to-login">Fazer login</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/script.js"></script>
+</body>
+</html>

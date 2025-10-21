@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/style.css" />
+    <link rel="stylesheet" href="../static/base.css" />
     <link rel="stylesheet" href="history.css"/>
     <link rel="icon" href="../static/favicon.ico" />
     <title>Histórico</title>
@@ -28,9 +28,25 @@
     <button class="menu-btn floating" onclick="toggleSidebar()">☰</button>
 
     <!-- Topbar -->
-    <header class="topbar">
-      <button class="user-btn" onclick="openUserPage()">usuário</button>
-    </header>
+     <header class="topbar">
+  <button class="user-btn" onclick="toggleUserPopup()">usuário</button>
+
+  <!-- Popup do usuário -->
+  <div id="user-popup" class="user-popup">
+    <p class="user-email">robson.sim@gmail.com</p>
+    <hr>
+    <a href="#">Personalizar conta</a>
+    <a href="#">Configurações</a>
+    <a href="#">Fale conosco</a>
+    <a href="#">Ajuda</a>
+    <hr>
+    <a href="#">Quem somos?</a>
+    <a href="#">Documentação</a>
+    <hr>
+    <a href="#" class="logout">Sair</a>
+  </div>
+</header>
+
 
     <!-- Conteúdo principal -->
     <div class="main-container">

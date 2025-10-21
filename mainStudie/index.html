@@ -1,42 +1,56 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>studie</title>
-    <link rel="stylesheet" href="static/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div>
-          <div class="logo"><a href="#">Studie </a></div>
-          <a href="./ExtraScrens/history.html">Histórico</a>
-          <a href="#" id="newChatBtn" style="display: none">Novo chat</a>
-          <a href="#">Documentação</a>
-        </div>
-        <div class="footer-link">
-          <a href="#">sobre nós</a>
-        </div>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Studie</title>
+  <link rel="stylesheet" href="static/style.css" />  
+  <link rel="stylesheet" href="static/base.css" />  
+
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="logo"><a href="#">Studie</a></div>
+        <a href="./ExtraScrens/history.html">Histórico</a>
+        <a href="#" id="newChatBtn" style="display: none">Novo chat</a>
+        <a href="#">Documentação</a>
+      </div>
+<div class="footer-link">
+        <a href="#">sobre nós</a>
+      </div>
+    </div>
       </div>
 
-      <header class="topbar">
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-        <button class="user-btn" onclick="openUserPage()">usuário</button>
-      </header>
+    <!-- Botão flutuante (fora da sidebar) -->
+    <button class="menu-btn floating" onclick="toggleSidebar()">☰</button>
 
+   <header class="topbar">
+  <button class="user-btn" onclick="toggleUserPopup()">usuário</button>
+
+  <!-- Popup do usuário -->
+  <div id="user-popup" class="user-popup">
+    <p class="user-email">robson.sim@gmail.com</p>
+    <hr>
+    <a href="#">Personalizar conta</a>
+    <a href="#">Configurações</a>
+    <a href="#">Fale conosco</a>
+    <a href="#">Ajuda</a>
+    <hr>
+    <a href="#">Quem somos?</a>
+    <a href="#">Documentação</a>
+    <hr>
+    <a href="#" class="logout">Sair</a>
+  </div>
+</header>
+
+    <div class="main-container">
       <!-- Main Content -->
       <div class="main">
         <!-- Intro Section -->
-        <div
-          class="intro"
-          style="
-            position: relative;
-            flex-direction: column;
-            gap: 20px;
-            padding-right: 80px;
-          "
-        >
+        <div class="intro">
           <div class="home-container">
             <div class="title">Como o <span>Studie</span> funciona:</div>
 
@@ -57,9 +71,9 @@
             <input
               type="text"
               id="entrada-inicial"
-              placeholder="    O que deseja estudar?"
+              placeholder="O que deseja estudar?"
             />
-            <button onclick="enviainicia()">></button>
+            <button onclick="enviainicia()">^</button>
           </div>
         </div>
 
@@ -74,12 +88,13 @@
               id="entrada"
               placeholder="Digite sua mensagem..."
             />
-            <button onclick="enviar()">enviar</button>
+            <button onclick="enviar()">^</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="static/script.js"></script>
-  </body>
+  <script src="static/script.js"></script>
+</body>
 </html>

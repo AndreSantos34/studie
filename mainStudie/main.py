@@ -13,10 +13,10 @@ from temas import TEMAS_POR_MATERIA
 YOUTUBE_API_KEY = 'AIzaSyClB66YUAolBTKU7mN3Wucs2vgixHZvsjE'
 GEMINI_API_KEY = 'AIzaSyBQk6I7IV7YEU26iKYJvi2mKEqWcdTDboI'
 
-# === Configura Gemini ===
+# === Configura Gemini explicitamente ===
 genai.configure(api_key=GEMINI_API_KEY)
 
-# === Memória simples por IP ===
+# === Memória simples por IP (volátil) ===
 conversas: Dict[str, Dict] = {}
 
 # === Identificar matéria ===
@@ -39,9 +39,9 @@ def buscar_videos_escolares(tema, materia, api_key, max_results=5):
         type='video',
         maxResults=max_results,
         safeSearch='strict',
-        videoDuration='medium',
-        order='relevance',
-        relevanceLanguage='pt'
+        videoDuration='medium', # Vídeos de duração média
+        order='relevance', # Ordenar por relevância
+        relevanceLanguage='pt'  # Relevância para o português
     ).execute()
 
     resultados = []
@@ -63,8 +63,7 @@ def buscar_videos_escolares(tema, materia, api_key, max_results=5):
 
 # === Gerar questões com Gemini ===
 def gerar_questoes_gemini(tema, videos, num_questoes=10):
-    modelo = genai.GenerativeModel("gemini-2.5-flash")
-
+    modelo = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
 
     detalhes_videos = "\n\n".join(
         [f"Título: {v['titulo']}\nDescrição: {v['descricao']}" for v in videos]
@@ -88,7 +87,6 @@ def gerar_questoes_gemini(tema, videos, num_questoes=10):
         C) Alternativa 3
         D) Alternativa 4
         E) Alternativa 5
-
         Vídeos:
 {detalhes_videos}
     """
@@ -106,11 +104,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from starlette.staticfiles import StaticFiles
+
 app.mount(
     "/static",
     StaticFiles(directory="static"),
     name="static"
 )
+
+
+from fastapi.responses import FileResponse
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
@@ -128,6 +131,42 @@ async def perguntar(pergunta: Pergunta, request: Request):
     texto = pergunta.texto.strip().lower()
     user_ip = request.client.host
     conversa = conversas.get(user_ip)
+
+    # === INTENÇÃO: mais vídeos ===
+    if conversa and re.search(r"(?:mais|outros)\s*(\d{0,2})?\s*vídeos?", texto):
+        tema = conversa["tema"]
+        materia = identificar_materia(tema)
+        videos_anteriores = conversa.get("videos", [])
+        num_videos = int(re.search(r"(\d{1,2})", texto).group(1)) if re.search(r"(\d{1,2})", texto) else 5
+
+        novos_videos = buscar_videos_escolares(tema, materia, YOUTUBE_API_KEY, max_results=num_videos)
+        ids_existentes = {v["link"].split("=")[-1] for v in videos_anteriores}
+        novos_unicos = [v for v in novos_videos if v["link"].split("=")[-1] not in ids_existentes]
+
+        conversas[user_ip]["videos"] = videos_anteriores + novos_unicos
+        conversas[user_ip]["etapa"] = "aguardando_questoes"
+
+        return {
+            "resposta": f"Aqui estão mais vídeos sobre '{tema}' (Matéria: {materia}):",
+            "videos": novos_unicos,
+            "questoes": "Quantas questões deseja gerar agora?"
+        }
+
+    # === INTENÇÃO: mais questões ===
+    if conversa and re.search(r"(?:mais|outras)\s*(\d{0,2})?\s*(questões|perguntas)", texto):
+        tema = conversa["tema"]
+        materia = identificar_materia(tema)
+        videos = conversa.get("videos", [])
+        num_q = int(re.search(r"(\d{1,2})", texto).group(1)) if re.search(r"(\d{1,2})", texto) else 10
+
+        questoes = gerar_questoes_gemini(tema, videos, num_questoes=num_q)
+        conversas[user_ip]["etapa"] = "finalizado"
+
+        return {
+            "resposta": f"Aqui estão mais {num_q} questões sobre '{tema}' (Matéria: {materia}):",
+            "videos": [],
+            "questoes": questoes
+        }
 
     # === Etapa 3 – número de questões ===
     if re.fullmatch(r"\d{1,2}", texto) and conversa and conversa.get("etapa") == "aguardando_questoes":
