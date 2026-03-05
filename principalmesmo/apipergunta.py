@@ -2,8 +2,8 @@ import google.generativeai as genai
 from googleapiclient.discovery import build
 
 # === CHAVES DE API ===
-YOUTUBE_API_KEY = 'AIzaSyClB66YUAolBTKU7mN3Wucs2vgixHZvsjE'
-GEMINI_API_KEY = 'AIzaSyBQk6I7IV7YEU26iKYJvi2mKEqWcdTDboI'
+YOUTUBE_API_KEY = '#'
+GEMINI_API_KEY = '#'
 
 # === MATÉRIAS E TEMAS PERMITIDOS ===
 TEMAS_POR_MATERIA = {
