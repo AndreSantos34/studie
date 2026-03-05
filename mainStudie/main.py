@@ -10,8 +10,8 @@ import re
 from temas import TEMAS_POR_MATERIA
 
 # === CHAVES DE API ===
-YOUTUBE_API_KEY = 'AIzaSyClB66YUAolBTKU7mN3Wucs2vgixHZvsjE'
-GEMINI_API_KEY = 'AIzaSyBQk6I7IV7YEU26iKYJvi2mKEqWcdTDboI'
+YOUTUBE_API_KEY = '#'
+GEMINI_API_KEY = '#'
 
 # === Configura Gemini explicitamente ===
 genai.configure(api_key=GEMINI_API_KEY)
